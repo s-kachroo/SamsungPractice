@@ -7,7 +7,7 @@
 * Endoscopy
 * Mr Lee
 * Mr Kim
-* Reseach Team / Rare Elements
+* Research Team / Rare Elements
 * Spaceship / Bomb Explosion
 * Wormhole
 * Omnious Number
