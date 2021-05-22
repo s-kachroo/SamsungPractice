@@ -29,6 +29,7 @@ bool dfs( int node , bool *visited , bool *inloop , int &prev ){
     }
 
     inloop[node]=0;  
+	//it shows is there is any indirect cycle which is creating a loop
 	return false;			 
 }
 
