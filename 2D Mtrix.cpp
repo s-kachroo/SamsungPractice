@@ -7,7 +7,7 @@ int main()
     int t;
     cin>>t;
     while(t--)
-    {
+    {\\i am in loop
         int n;
         bool isNoPath = false;
         cin>>n;
