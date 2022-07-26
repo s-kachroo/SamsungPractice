@@ -268,4 +268,4 @@ int main(void){
     }
     return 0;
 }
-
+//not the right solution
