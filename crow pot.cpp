@@ -18,113 +18,114 @@ Let say two pots are there with overflow no.s {5,58}, and crow has to overflow o
 So crow will put 5 stones in pot with overflow no.(58), it will not overflow, then he will put in 
 pot with overflow no.(5), hence the total no. of stones to make overflow one pot is=10.
 */
-#include<iostream>
-#include<algorithm>
-using namespace std;
+// #include<iostream>
+// #include<algorithm>
+// using namespace std;
 
-int n, k;
+// int n, k;
 
-void merger(int *overflow_numbers, int l, int m, int r){
-    int i,j,k;
-    int n1=m-l+1;
-    int n2=r-m;
-    int L[n1], R[n2];
-    for(int i=0; i<n1; i++){
-        L[i]=overflow_numbers[l+i];
-    }
-    for(int j=0; j<n2; j++){
-        R[j]=overflow_numbers[m+1+j];
-    }
-
-
-    i=0;
-    j=0;
-    k=l;
-    while(i<n1 && j<n2){
-        if(L[i]<=R[j]){
-            overflow_numbers[k]=L[i];
-            i++;
-        }else{
-            overflow_numbers[k]=R[j];
-            j++;
-        }
-        k++;
-    }
-    while(i<n1){
-        overflow_numbers[k]=L[i];
-        k++;
-        i++;
-    }
-    while(j<n2){
-        overflow_numbers[k]=R[j];
-        k++;
-        j++;
-    }
-}
+// void merger(int *overflow_numbers, int l, int m, int r){
+//     int i,j,k;
+//     int n1=m-l+1;
+//     int n2=r-m;
+//     int L[n1], R[n2];
+//     for(int i=0; i<n1; i++){
+//         L[i]=overflow_numbers[l+i];
+//     }
+//     for(int j=0; j<n2; j++){
+//         R[j]=overflow_numbers[m+1+j];
+//     }
 
 
-void merge_sort(int *overflow, int l, int r){
-    if(l<r){
-        int m=l+(r-l)/2;
-        merge_sort(overflow, l, m);
-        merge_sort(overflow, m+1, r);
-        merger(overflow, l, m, r);
-    }
-}
+//     i=0;
+//     j=0;
+//     k=l;
+//     while(i<n1 && j<n2){
+//         if(L[i]<=R[j]){
+//             overflow_numbers[k]=L[i];
+//             i++;
+//         }else{
+//             overflow_numbers[k]=R[j];
+//             j++;
+//         }
+//         k++;
+//     }
+//     while(i<n1){
+//         overflow_numbers[k]=L[i];
+//         k++;
+//         i++;
+//     }
+//     while(j<n2){
+//         overflow_numbers[k]=R[j];
+//         k++;
+//         j++;
+//     }
+// }
 
-int minCrowPotStoneSameer(int *arr){
-	int stone = 0, index = 0, left = n, prev = 0;
+
+// void merge_sort(int *overflow, int l, int r){
+//     if(l<r){
+//         int m=l+(r-l)/2;
+//         merge_sort(overflow, l, m);
+//         merge_sort(overflow, m+1, r);
+//         merger(overflow, l, m, r);
+//     }
+// }
+
+// int minCrowPotStoneSameer(int *arr){
+// 	int stone = 0, index = 0, left = n, prev = 0;
 	
-	for(int i=1; i<=k; i++){
-		stone += left * (arr[index] - prev);
-	    left--;
-	    prev += arr[index]-prev;
-	    index++;
-	}
+// 	for(int i=1; i<=k; i++){
+// 		stone += left * (arr[index] - prev);
+// 	    left--;
+// 	    prev += arr[index]-prev;
+// 	    index++;
+// 	}
 	
-   	return stone;
-}
+//    	return stone;
+// }
 
-int minCrowPotStoneFirst(int *overflow){
-	int result = 0;
-	for(int i=0 ; i<k ;i++){
-		int min = overflow[i];
-		for(int j=i; j<n; j++){
-			overflow[j] = overflow[j] - min;
-			result = result + min;
-		}
-	}
-	return result;
-}
+// int minCrowPotStoneFirst(int *overflow){
+// 	int result = 0;
+// 	for(int i=0 ; i<k ;i++){
+// 		int min = overflow[i];
+// 		for(int j=i; j<n; j++){
+// 			overflow[j] = overflow[j] - min;
+// 			result = result + min;
+// 		}
+// 	}
+// 	return result;
+// }
 
-int minCrowPotStoneSecond(int *overflow_numbers){
-    int total_stones=0;
+// int minCrowPotStoneSecond(int *overflow_numbers){
+//     int total_stones=0;
 
-    for(int i=n-1; i>0; i--){
-        overflow_numbers[i] = max(0,overflow_numbers[i]-overflow_numbers[i-1]);
-    }
+//     for(int i=n-1; i>0; i--){
+//         overflow_numbers[i] = max(0,overflow_numbers[i]-overflow_numbers[i-1]);
+//     }
 
-    for(int i=0; i<k; i++){
-        total_stones+=(overflow_numbers[i]*(n-i));
-    }
-    return total_stones;
-}
+//     for(int i=0; i<k; i++){
+//         total_stones+=(overflow_numbers[i]*(n-i));
+//     }
+//     return total_stones;
+// }
 
-int main(){
-	cin >> n;
-	int *arr = new int[n + 1];
-	for(int i=0;i<n;i++){
-		cin>>arr[i];
-	}
-	cin >> k;
+// int main(){
+// 	cin >> n;
+// 	int *arr = new int[n + 1];
+// 	for(int i=0;i<n;i++){
+// 		cin>>arr[i];
+// 	}
+// 	cin >> k;
 
-    merge_sort(arr, 0, n-1);
+//     merge_sort(arr, 0, n-1);
 	
-	cout << minCrowPotStoneSecond(arr);
-	return 0;
-}
+// 	cout << minCrowPotStoneSecond(arr);
+// 	return 0;
+// }
+// Not work for the cases like n = 3 , k = 1, 5 5 10 ans = 10 but it give 15
 
-/*
+//THis solution work fine for all the cases. 
 #include<bits/stdc++.h>
 using namespace std;
 long long dp[1005][1005];
@@ -181,4 +182,3 @@ int main()
     }
     return 0;
 }
-*/
