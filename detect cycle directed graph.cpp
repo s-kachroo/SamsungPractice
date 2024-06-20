@@ -1,4 +1,5 @@
 /* https://sapphireengine.com/@/6tfphj */
+/* https://cses.fi/problemset/task/1678 */
 #include<iostream>
 using namespace std;
 
