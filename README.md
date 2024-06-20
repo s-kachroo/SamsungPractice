@@ -19,4 +19,4 @@ Rest problems are also asked in various Samsung India 3-hour Coding Test.
 * <https://github.com/rishabh115/Interview-Questions/tree/master/Samsung>
 * GeeksForGeeks Samsung Coding Section
 
-#### [Last Update - Sep 2019]
+#### For any changes or additional questions, please feel free to raise a PR
