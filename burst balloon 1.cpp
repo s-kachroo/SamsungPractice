@@ -8,11 +8,17 @@ Whenever a particular balloon is shot the no of points increases by
  
 You have to output the maximum no of points possible.
  
-Input
+Input-1
 1 2 3 4
  
-Output
+Output-1
 20
+
+Input-2
+1 0 2 3 0 4
+
+Output-2
+34
 */
  
 #include <iostream>
@@ -21,7 +27,7 @@ using namespace std;
 int maxcoins(int A[],int siz)
 {
     int nums[siz+2];
-    int n=1;
+    int n=1, points = 0;
  
     for(int i=0;i<siz;i++)
     {
@@ -30,10 +36,14 @@ int maxcoins(int A[],int siz)
             nums[n] = A[i];
             n++;
         }
+        else
+            points += (n - 1 > 0 ? nums[n - 1] : 1) * (i + 1 < siz ? A[i + 1] : 1);    // balloons with zero points should be removed first using previous and next balloon points
+            
     }
     nums[0] = nums[n] = 1;
     n++;
- 
+
+    // dp[i][j]: maximum points that can be collected from balloons from index i to j, (i and j exclusive)
     int dp[n][n] = {};
  
     for(int j=2;j<n;j++)
@@ -58,7 +68,7 @@ int maxcoins(int A[],int siz)
             cout<<endl;
         }
     }
-    return dp[0][n-1];
+    return points + dp[0][n-1];
 }
  
 int main()
