@@ -174,3 +174,70 @@ int main()
     return 0;
 }
 */
+//Same as Travelling Salesman Problem Approach 
+
+// #include <bits/stdc++.h>
+// using namespace std;
+// #define ll long long int
+// #define vi vector<int>
+// #define pii pair<int, int>
+// #define F first
+// #define S second
+// #define input(a)                       \
+//     for (int i = 0; i < a.size(); i++) \
+//     cin >> a[i]
+// #define print(a)     \
+//     for (auto i : a) \
+//     cout << i << ' '
+// #define all(a) a.begin(), a.end()
+
+// int dfs(int node, vector<pii> &cost, vector<vector<int>> &dp, int mask, pii &home, int visnodes)
+// {
+//     if (visnodes == cost.size())
+//     {
+//         return (abs(cost[node].first - home.first) + abs(cost[node].second - home.second));
+//     }
+//     if (dp[node][mask] != -1)
+//         return dp[node][mask];
+
+//     int res = INT_MAX;
+//     for (int i = 0; i < cost.size(); i++)
+//     {
+//         if ((mask & (1 << i)) == 0)
+//             res = min(res, abs(cost[node].first - cost[i].first) + abs(cost[node].second - cost[i].second) +
+//                                dfs(i, cost, dp, mask | (1 << i), home, visnodes + 1));
+//     }
+//     return dp[node][mask] = res;
+// }
+
+// void solve()
+// {
+//     int n;
+//     cin >> n;
+//     vector<pair<int, int>> v(n);
+//     pii office;
+//     cin >> office.first >> office.second;
+//     pii home;
+//     cin >> home.first >> home.second;
+//     for (int i = 0; i < n; i++)
+//         cin >> v[i].first >> v[i].second;
+//     int res = INT_MAX;
+//     for (int i = 0; i < n; i++)
+//     {
+//         vector<vector<int>> dp(n, vector<int>((1 << n), -1));
+//         int mask = 1;
+//         res = min(res, abs(office.first - v[i].first) + abs(office.second - v[i].second) + dfs(i, v, dp, mask, home, 1));
+//     }
+//     cout << res << endl;
+// }
+// int main()
+// {
+//     ios_base::sync_with_stdio(0);
+//     cin.tie(0);
+//     cout.tie(0);
+//     int t = 1;
+//     cin >> t;
+//     while (t--)
+//         solve();
+//     return 0;
+// }
