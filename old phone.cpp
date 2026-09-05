@@ -169,3 +169,155 @@ int main(){
 	}
 	return 0;
 }
+
+
+
+// To pass Samsung's strict constraints without crashing or timing out, a Breadth-First Search (BFS) approach is much better than DFS.
+
+#include <iostream>
+#include <queue>
+#include <cmath>
+#include <climits>
+
+using namespace std;
+
+// In Samsung tests, values on the calculator screen usually stay within a reasonable limit.
+// We define a boundary to prevent integer overflows and limit our search space.
+#define MAX_VAL 100000 
+
+// This structure represents the exact state of our calculator at any given moment.
+struct CalcState {
+    int prev;       // Accumulated result from previous operations (-1 means empty)
+    int curr;       // The number currently being typed on the screen (-1 means empty)
+    int op;         // Pending operation: 1(+), 2(-), 3(*), 4(/), -1(none)
+    int touches;    // Total number of button presses made so far
+};
+
+int workingDigits[12];
+int workingOps[6];
+int numDigits, numOps, maxTouches, target;
+
+// A 3D visited array to avoid processing the same calculator state multiple times.
+// visited[prev_val][curr_val][pending_op] = minimum touches taken to reach this state.
+// To handle negative numbers or empty states safely, we add offsets or check bounds.
+int visited[1005][1005][5]; 
+
+// Helper function to evaluate the math equation
+int calculate(int prev, int curr, int op) {
+    if (prev == -1) return curr;
+    if (op == 1) return prev + curr;
+    if (op == 2) return prev - curr;
+    if (op == 3) return prev * curr;
+    if (op == 4) {
+        if (curr == 0) return -1; // Prevent division by zero
+        return prev / curr;
+    }
+    return curr;
+}
+
+int solve() {
+    queue<CalcState> q;
+    
+    // Step 1: Initial States. 
+    // We can start by pressing any valid single digit button.
+    for (int i = 0; i < numDigits; i++) {
+        int digit = workingDigits[i];
+        
+        // If typing this single digit directly hits the target, we only need 1 touch!
+        if (digit == target) return 1; 
+        
+        // Push this initial state into our BFS queue
+        // (prev = -1, curr = digit, op = -1, touches = 1)
+        q.push({-1, digit, -1, 1});
+    }
+
+    // Step 2: Begin BFS Traversal
+    while (!q.empty()) {
+        CalcState u = q.front();
+        q.pop();
+
+        // If we exceed the maximum allowed touches, we don't explore deeper from here
+        if (u.touches >= maxTouches) continue;
+
+        // --- OPTION A: Press a DIGIT key to append to the current number ---
+        if (u.curr != -1) { // We can only append if a number is already started
+            for (int i = 0; i < numDigits; i++) {
+                int nextDigit = workingDigits[i];
+                
+                // Form the new number by appending the digit (e.g., 1 followed by 8 becomes 18)
+                long long nextCurr = (long long)u.curr * 10 + nextDigit;
+                
+                // Prevent out-of-bound errors or large numbers
+                if (nextCurr < MAX_VAL) {
+                    int nCurr = (int)nextCurr;
+                    int nTouches = u.touches + 1;
+
+                    // If we just typed the target number directly without using operations, we are done!
+                    if (u.op == -1 && nCurr == target) {
+                        return nTouches;
+                    }
+
+                    // Push the updated state into the queue
+                    q.push({u.prev, nCurr, u.op, nTouches});
+                }
+            }
+        }
+
+        // --- OPTION B: Press an OPERATOR key (+, -, *, /) ---
+        // We can only press an operator if there is a valid current number on the screen
+        if (u.curr != -1) {
+            for (int i = 0; i < numOps; i++) {
+                int nextOp = workingOps[i];
+                
+                // If there was a pending operation, calculate its intermediate value first
+                if (u.op == 4 && u.curr == 0) continue; // Skip division by zero
+                int nextPrev = calculate(u.prev, u.curr, u.op);
+                
+                // Keep the values within a valid positive range for basic calculator constraints
+                if (nextPrev >= 0 && nextPrev < MAX_VAL) {
+                    // Moving the result to 'prev', clearing 'curr' (-1), setting the new operation
+                    q.push({nextPrev, -1, nextOp, u.touches + 1});
+                }
+            }
+        }
+
+        // --- OPTION C: Press the EQUAL (=) key ---
+        // We can only hit '=' if we have a previous value, a current value, and an active operation
+        if (u.prev != -1 && u.curr != -1 && u.op != -1) {
+            if (u.op == 4 && u.curr == 0) continue; // Skip division by zero
+            
+            int finalResult = calculate(u.prev, u.curr, u.op);
+            int nTouches = u.touches + 1; // +1 touch for pressing '='
+
+            // If hitting '=' evaluates to our target, this is our minimum path!
+            if (finalResult == target && nTouches <= maxTouches) {
+                return nTouches;
+            }
+        }
+    }
+
+    // If the queue runs empty and we never hit the target within maxTouches
+    return -1; 
+}
+
+int main() {
+    int t;
+    if (!(cin >> t)) return 0;
+    
+    int caseNum = 1;
+    while (t--) {
+        cin >> numDigits >> numOps >> maxTouches;
+        
+        for (int i = 0; i < numDigits; i++) {
+            cin >> workingDigits[i];
+        }
+        for (int i = 0; i < numOps; i++) {
+            cin >> workingOps[i];
+        }
+        cin >> target;
+
+        int ans = solve();
+        cout << "#" << caseNum++ << " " << ans << endl;
+    }
+    return 0;
+}
